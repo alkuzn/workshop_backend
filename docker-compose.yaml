@@ -1,0 +1,41 @@
+services:
+  auth_service:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+    networks:
+      common:
+
+  nginx:
+    depends_on:
+      auth_service:
+        condition: service_healthy
+    networks:
+      common:
+
+  postgres:
+    networks:
+      common: 
+  
+  redis:
+    networks:
+      common: 
+
+include:
+  - path: nginx/docker-compose.yaml
+    project_directory: nginx
+  - path: auth_service/docker-compose.yaml
+    project_directory: auth_service
+  - path: postgres/docker-compose.yaml
+    project_directory: postgres
+  - path: redis/docker-compose.yaml
+    project_directory: redis
+
+
+networks:
+  common:
