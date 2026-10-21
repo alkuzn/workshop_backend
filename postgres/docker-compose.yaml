@@ -1,0 +1,23 @@
+services:
+  postgres:
+    container_name: test_db_postgres
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM postgres:18.3-alpine3.23
+        COPY --chown=postgres init.sql /docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: "pg_isready -U postgres"
+      start_period: 1m
+      interval: 10s
+      retries: 5
+    volumes:
+      - type: tmpfs  
+        target: /var/lib/postgresql/data 
+        tmpfs: 
+          mode: 0700 
+    #   - pg_data:/var/lib/postgresql/data
+    #  - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  pg_data:
+    driver: local

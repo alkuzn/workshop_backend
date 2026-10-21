@@ -1,0 +1,3 @@
+[submodule "auth_service"]
+	path = auth_service
+	url = https://github.com/alkuzn/auth_service.git

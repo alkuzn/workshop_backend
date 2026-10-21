@@ -1,0 +1,11 @@
+services:
+  redis:
+    image: redis:8.10.2-alpine
+    working_dir: /data
+    user: "987:987"
+    volumes:
+      - ./:/data
+    healthcheck:
+      test: redis-cli ping
+    command: redis-server /data/redis.conf
+
